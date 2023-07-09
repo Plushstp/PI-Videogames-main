@@ -9,8 +9,7 @@ module.exports = (sequelize) => {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-        primaryKey: true
+        primaryKey: true,
       },
       name: {
         type: DataTypes.STRING,
@@ -18,31 +17,29 @@ module.exports = (sequelize) => {
       },
       description: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       platforms: {
-        type: DataTypes.ARRAY(DataTypes.JSONB),
-        allowNull: false
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        allowNull: false,
+        defaultValue: ["PC"],
       },
       background_image: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       released: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       rating: {
-        type: DataTypes.FLOAT,
-        validate: {
-          min: 0,
-          max: 5
-        }
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       created: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true
-      }
+        defaultValue: true,
+      },
     },
     { timestamps: false }
   )

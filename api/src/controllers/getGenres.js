@@ -1,11 +1,26 @@
-const { genreService } = require("../services/index")
+const { Genres } = require('../db')
+const { URL, KEY } = process.env
+const axios = require("axios")
 
-const getGenres = async (req, res) => {
-  try {
-    const listOfGenres = await genreService()
-    res.status(200).json(listOfGenres)
-  } catch (error) {
-    res.status(500).json({ error: error.message })
+const getGenres = async () => {
+  const genresInDb = await Genres.findAll()
+  if (genresInDb.length > 0) {
+    return genresInDb
+  }
+  const url = `${URL}/genres?key=${KEY}`
+  const { data } = await axios.get(url)
+  const listOfGenres = data.results.map((genre) => {
+    return {
+      id: genre.id,
+      name: genre.name
+    }
+  })
+  if (!listOfGenres) {
+    throw Error("Not genres found")
+  } else {
+    Genres.bulkCreate(listOfGenres)
+    const listOfGenresFromDb = await Genres.findAll()
+    return listOfGenresFromDb
   }
 }
 
